@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "434133260540",
+    "project_id": "superpuperchat-377e9",
+    "storage_bucket": "superpuperchat-377e9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:434133260540:android:1d036700f6a010966f9f79",
+        "android_client_info": {
+          "package_name": "com.example.superpuperchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "434133260540-al35547b95e5j0c51rjo1knhkelvlfpe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcFCefEKP2C-QY9KMs2qu6i3BIHfrPcM0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "434133260540-al35547b95e5j0c51rjo1knhkelvlfpe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:434133260540:android:fa5d1e8ec596aaa66f9f79",
+        "android_client_info": {
+          "package_name": "ffd.gg.h"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "434133260540-al35547b95e5j0c51rjo1knhkelvlfpe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcFCefEKP2C-QY9KMs2qu6i3BIHfrPcM0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "434133260540-al35547b95e5j0c51rjo1knhkelvlfpe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

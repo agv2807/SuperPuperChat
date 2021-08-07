@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/gray_dark"
+    android:orientation="vertical"
+    tools:context=".fragments.ProfileFragment">
+
+    <ImageView
+        android:id="@+id/log_out_ic"
+        android:src="@drawable/log_out"
+        app:tint="@color/white"
+        android:layout_gravity="end"
+        android:layout_margin="20dp"
+        android:padding="8dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_photo"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="20dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/user_name"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/round_corners"
+            android:enabled="false"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:text="SuperName"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:id="@+id/complete_icon"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/complete"
+            app:tint="@color/white"
+            android:visibility="gone"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
+
+        <ImageView
+            android:id="@+id/edit_icon"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/edit"
+            app:tint="@color/white"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
