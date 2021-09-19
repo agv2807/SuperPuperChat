@@ -1,17 +1,15 @@
-package com.example.superpuperchat.fragments
+package com.example.superpuperchat.profile
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
-import com.example.superpuperchat.activities.MainActivity
-import com.example.superpuperchat.activities.TabBarActivity
+import com.example.superpuperchat.sign.SignActivity
 
-class MyDialogFragment: DialogFragment() {
+class QuitConfirmDialogFragment: DialogFragment() {
 
-    private val tabBarActivity: TabBarActivity
-        get() = activity as TabBarActivity
+    private val signActivity: SignActivity
+        get() = activity as SignActivity
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
@@ -20,9 +18,7 @@ class MyDialogFragment: DialogFragment() {
                 .setMessage("Вы уверены, что хотите выйти?")
                 .setCancelable(true)
                 .setPositiveButton("Выйти") { dialog, id ->
-                        val intent = Intent(context, MainActivity::class.java)
-                        startActivity(intent)
-                        tabBarActivity.finish()
+                        signActivity.quitFromAcc()
                 }
                 .setNegativeButton("Отмена") { dialog, id ->
 

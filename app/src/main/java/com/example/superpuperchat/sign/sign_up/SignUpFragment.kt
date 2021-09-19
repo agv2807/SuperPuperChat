@@ -1,4 +1,4 @@
-package com.example.superpuperchat.fragments
+package com.example.superpuperchat.sign.sign_up
 
 import android.app.Activity
 import android.content.Intent
@@ -10,8 +10,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.superpuperchat.R
-import com.example.superpuperchat.activities.MainActivity
-import com.example.superpuperchat.data_classes.User
+import com.example.superpuperchat.models.User
+import com.example.superpuperchat.sign.SignActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -43,8 +43,8 @@ class SignUpFragment : Fragment() {
     private lateinit var loader: ProgressBar
     private lateinit var mainCont: LinearLayout
 
-    private val mainActivity: MainActivity
-        get() = activity as MainActivity
+    private val signActivity: SignActivity
+        get() = activity as SignActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,7 +76,7 @@ class SignUpFragment : Fragment() {
         }
 
         backTextView.setOnClickListener {
-            mainActivity.routeToSignIn()
+            signActivity.routeToSignIn()
         }
 
         addPhotoButton.setOnClickListener {
@@ -92,7 +92,7 @@ class SignUpFragment : Fragment() {
             mainCont.visibility = View.GONE
 
             auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(mainActivity) { task ->
+                .addOnCompleteListener(signActivity) { task ->
                     if (task.isSuccessful) {
                         if (imageUri == null) {
                             updateUserInfo(userNameEditText.text.toString())
@@ -162,7 +162,7 @@ class SignUpFragment : Fragment() {
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     createNewUser(user)
-                    mainActivity.routeChat()
+                    signActivity.routeChat()
                 }
             }
     }

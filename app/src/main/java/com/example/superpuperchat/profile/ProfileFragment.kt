@@ -1,4 +1,4 @@
-package com.example.superpuperchat.fragments
+package com.example.superpuperchat.profile
 
 import android.app.Activity
 import android.content.Intent
@@ -74,7 +74,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun openAlertDialog() {
-        val dialogFragment = MyDialogFragment()
+        val dialogFragment = QuitConfirmDialogFragment()
         val manager = activity?.supportFragmentManager!!
         dialogFragment.show(manager, "myDialog")
     }

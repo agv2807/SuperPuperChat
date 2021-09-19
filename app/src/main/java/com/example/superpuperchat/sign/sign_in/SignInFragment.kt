@@ -1,4 +1,4 @@
-package com.example.superpuperchat.fragments
+package com.example.superpuperchat.sign.sign_in
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.superpuperchat.R
-import com.example.superpuperchat.activities.MainActivity
+import com.example.superpuperchat.sign.SignActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -23,8 +23,8 @@ class SignInFragment : Fragment() {
     private var loader: ProgressBar? = null
     private var mainCont: LinearLayout? = null
 
-    private val mainActivity: MainActivity
-        get() = activity as MainActivity
+    private val signActivity: SignActivity
+        get() = activity as SignActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +52,7 @@ class SignInFragment : Fragment() {
         }
 
         routeSignUpTextView?.setOnClickListener {
-            mainActivity.routeToSignUp()
+            signActivity.routeToSignUp()
         }
     }
 
@@ -68,7 +68,7 @@ class SignInFragment : Fragment() {
             auth?.signInWithEmailAndPassword(email, password)
                 ?.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        mainActivity.routeChat()
+                        signActivity.routeChat()
                     } else {
                         Toast.makeText(activity, task.exception.toString(), Toast.LENGTH_SHORT)
                             .show()

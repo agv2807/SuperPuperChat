@@ -12,17 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SuperPuperChat">
-        <activity android:name=".activities.TabBarActivity">
-
-        </activity>
         <activity
-            android:name=".activities.ChatActivity"
-            android:label="@string/title_activity_chat"
-            android:theme="@style/Theme.SuperPuperChat.NoActionBar">
-
-        </activity>
-        <activity
-            android:name=".activities.MainActivity"
+            android:name=".sign.SignActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

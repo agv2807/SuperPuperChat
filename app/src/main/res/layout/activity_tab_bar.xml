@@ -5,25 +5,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/gray_dark"
-    tools:context=".activities.TabBarActivity">
+    android:background="@color/gray_dark">
 
     <FrameLayout
         android:id="@+id/tap_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation"/>
+        android:layout_above="@id/bottom_nav_fragment" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/bottom_nav_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/gray"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
-        app:menu="@menu/nav_menu"
-        />
-
+        tools:layout="@layout/fragment_tab_bar" />
 
 </RelativeLayout>

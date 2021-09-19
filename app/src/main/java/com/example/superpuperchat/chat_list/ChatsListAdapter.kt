@@ -1,4 +1,4 @@
-package com.example.superpuperchat.adapters
+package com.example.superpuperchat.chat_list
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,14 +7,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superpuperchat.R
-import com.example.superpuperchat.activities.ChatsListActivityInterface
-import com.example.superpuperchat.data_classes.User
-import com.example.superpuperchat.data_classes.UserMessage
+import com.example.superpuperchat.models.User
+import com.example.superpuperchat.models.UserMessage
 import com.squareup.picasso.Picasso
 
 data class ChatMessage(val user: User, var message: UserMessage? = null)
 
-class ChatsListAdapter(var parentActivity: ChatsListActivityInterface) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatsListAdapter(private var parentActivity: ChatsListActivityInterface) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items = arrayListOf<ChatMessage>()
 
