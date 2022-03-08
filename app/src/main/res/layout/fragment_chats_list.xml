@@ -60,8 +60,6 @@
 
             </RelativeLayout>
 
-
-
             <ImageView
                 android:id="@+id/search_icon"
                 android:layout_width="30dp"

@@ -55,9 +55,7 @@ class ChatsListFragment: Fragment(), ChatsListActivityInterface {
 
         setupViews(view)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            setupListenerData()
-        }
+        setupListenerData()
 
         chatsRecyclerView?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         chatsRecyclerView?.adapter = adapter
@@ -104,9 +102,7 @@ class ChatsListFragment: Fragment(), ChatsListActivityInterface {
     private fun setupListenerData() {
         val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    updateData(snapshot)
-                }
+                updateData(snapshot)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -137,10 +133,12 @@ class ChatsListFragment: Fragment(), ChatsListActivityInterface {
                 .lastOrNull()
             item.message = lastMessage
         }
-
-        CoroutineScope(Dispatchers.Main).launch {
-            adapter.setData(ArrayList(users))
+        val mutableUsers = users.toMutableList()
+        users.forEach {
+            if (it.message == null || it.message?.text == "")
+                mutableUsers.remove(it)
         }
+        adapter.setData(ArrayList(mutableUsers))
     }
 
     override fun routeToUser(user: User) {

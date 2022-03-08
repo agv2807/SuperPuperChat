@@ -8,7 +8,7 @@
     <string name="password">Пароль</string>
     <string name="enter">Войти</string>
     <string name="open_register">Зарегистрироваться</string>
-    <string name="confirrm_password">Подтверждение пароля</string>
+    <string name="confirm_password">Подтверждение пароля</string>
     <string name="register">Регистрация</string>
     <string name="title_activity_chat">ChatActivity</string>
     <string name="message">Сообщение</string>
