@@ -1,18 +1,16 @@
 package com.example.superpuperchat.activities
 
 import android.content.Context
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.example.superpuperchat.R
-import com.example.superpuperchat.data_classes.User
-import com.example.superpuperchat.fragments.ChatsListFragment
-import com.example.superpuperchat.fragments.ProfileFragment
+import com.example.superpuperchat.models.User
+import com.example.superpuperchat.chat_list_screen.ChatsListFragment
+import com.example.superpuperchat.chat_screen.ChatFragment
+import com.example.superpuperchat.profile_screen.ProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-
-interface ChatsListActivityInterface {
-    var localContext: Context?
-    fun routeToUser(user: User)
-}
 
 class TabBarActivity: AppCompatActivity() {
 
@@ -50,9 +48,20 @@ class TabBarActivity: AppCompatActivity() {
         }
     }
 
-    private fun routeToChats() {
+    fun routeToChats() {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.tap_container, chatsFragment)
+            commit()
+        }
+        bottomNavigation?.visibility = View.VISIBLE
+    }
+
+    fun routeToUserChat(id: String) {
+        val chatFragment = ChatFragment(id)
+
+        bottomNavigation?.visibility = View.GONE
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.tap_container, chatFragment)
             commit()
         }
     }

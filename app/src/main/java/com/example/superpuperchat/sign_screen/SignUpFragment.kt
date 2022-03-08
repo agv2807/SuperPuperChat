@@ -1,4 +1,4 @@
-package com.example.superpuperchat.fragments
+package com.example.superpuperchat.sign_screen
 
 import android.app.Activity
 import android.content.Intent
@@ -10,8 +10,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.superpuperchat.R
-import com.example.superpuperchat.activities.MainActivity
-import com.example.superpuperchat.data_classes.User
+import com.example.superpuperchat.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth

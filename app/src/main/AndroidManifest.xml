@@ -15,14 +15,9 @@
         <activity android:name=".activities.TabBarActivity">
 
         </activity>
-        <activity
-            android:name=".activities.ChatActivity"
-            android:label="@string/title_activity_chat"
-            android:theme="@style/Theme.SuperPuperChat.NoActionBar">
 
-        </activity>
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".sign_screen.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

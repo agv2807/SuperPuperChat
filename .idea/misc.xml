@@ -6,7 +6,9 @@
         <entry key="app/src/main/res/drawable/round_corners.xml" value="0.135" />
         <entry key="app/src/main/res/layout/activity_chat.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/activity_tab_bar.xml" value="0.23143115942028986" />
         <entry key="app/src/main/res/layout/dialog_item.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.23143115942028986" />
         <entry key="app/src/main/res/layout/fragment_chats_list.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_register_screen.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/fragment_sign_in_screen.xml" value="0.19610507246376813" />

@@ -7,12 +7,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superpuperchat.R
-import com.example.superpuperchat.activities.ChatsListActivityInterface
-import com.example.superpuperchat.data_classes.User
-import com.example.superpuperchat.data_classes.UserMessage
+import com.example.superpuperchat.chat_list_screen.ChatsListActivityInterface
+import com.example.superpuperchat.models.ChatMessage
 import com.squareup.picasso.Picasso
-
-data class ChatMessage(val user: User, var message: UserMessage? = null)
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ChatsListAdapter(var parentActivity: ChatsListActivityInterface) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -43,9 +43,13 @@ class ChatsListAdapter(var parentActivity: ChatsListActivityInterface) : Recycle
             val userName = itemView.findViewById<TextView>(R.id.item_user_name)
             val lastMessage = itemView.findViewById<TextView>(R.id.last_message)
             val photo = itemView.findViewById<ImageView>(R.id.user_photo)
+            val time = itemView.findViewById<TextView>(R.id.time)
             userName.text = item.user.name
             lastMessage.text = item.message?.text
             setPhoto(item.user.uri, photo)
+            time.text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(
+                Date(item.message?.time?.toLong()!!*1)
+            )
         }
     }
 

@@ -1,19 +1,22 @@
-package com.example.superpuperchat.activities
+package com.example.superpuperchat.chat_screen
 
-import android.content.ContentValues.TAG
+import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superpuperchat.R
-import com.example.superpuperchat.adapters.ChatAdapter
-import com.example.superpuperchat.data_classes.User
-import com.example.superpuperchat.data_classes.UserMessage
+import com.example.superpuperchat.activities.TabBarActivity
+import com.example.superpuperchat.models.User
+import com.example.superpuperchat.models.UserMessage
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
@@ -21,9 +24,8 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlin.collections.ArrayList
 
-class ChatActivity : AppCompatActivity() {
+class ChatFragment(friendId: String = "") : Fragment() {
 
     private val messagesDatabase: DatabaseReference = Firebase.database.reference
 
@@ -36,39 +38,44 @@ class ChatActivity : AppCompatActivity() {
 
     private val adapter = ChatAdapter()
 
-    private var friendId = ""
+    private val _friendId = friendId
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat)
+    private val tabBarActivity: TabBarActivity
+        get() = activity as TabBarActivity
 
-        setupViews()
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_chat, container, false)
+
+        setupViews(view)
         setupListenerData()
 
-        friendId = intent.getStringExtra("userId").toString()
-
-        chatRv?.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        chatRv?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         chatRv?.adapter = adapter
+
+        return view
     }
 
-    private fun setupViews() {
-        chatRv = findViewById(R.id.chat)
-        messageField = findViewById(R.id.message_field)
-        sendIcon = findViewById(R.id.send_icon)
-        userPhoto = findViewById(R.id.chat_profile_photo)
-        userName = findViewById(R.id.chat_username)
-        backIc = findViewById(R.id.back_ic)
+    private fun setupViews(view: View) {
+        chatRv = view.findViewById(R.id.chat)
+        messageField = view.findViewById(R.id.message_field)
+        sendIcon = view.findViewById(R.id.send_icon)
+        userPhoto = view.findViewById(R.id.chat_profile_photo)
+        userName = view.findViewById(R.id.chat_username)
+        backIc = view.findViewById(R.id.back_ic)
 
         sendIcon?.setOnClickListener {
             if (messageField?.text.toString().isEmpty()) {
-                Toast.makeText(this, "Введите сообщение", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Введите сообщение", Toast.LENGTH_SHORT).show()
             } else {
                 pushEndTime()
             }
         }
 
         backIc?.setOnClickListener {
-            finish()
+            tabBarActivity.routeToChats()
         }
     }
 
@@ -101,15 +108,15 @@ class ChatActivity : AppCompatActivity() {
         val message = UserMessage(text = text, user = messageUser, time = endTime)
 
         messagesDatabase.child("users").child(user.uid).child("chats")
-            .child(friendId).child(endTime).setValue(message)
-        messagesDatabase.child("users").child(friendId).child("chats")
+            .child(_friendId).child(endTime).setValue(message)
+        messagesDatabase.child("users").child(_friendId).child("chats")
             .child(user.uid).child(endTime).setValue(message)
         messageField?.setText("")
     }
 
     private fun setupFriendInfo(name: String, uri: String?) {
         userName?.text = name
-        Picasso.with(this)
+        Picasso.with(context)
             .load(uri)
             .placeholder(R.drawable.man)
             .into(userPhoto)
@@ -124,13 +131,13 @@ class ChatActivity : AppCompatActivity() {
                 val friendUser = usersSnapshot.children.mapNotNull {
                     it.getValue<User>()
                 }.firstOrNull {
-                    it.id == friendId
+                    it.id == _friendId
                 }
 
                 setupFriendInfo(friendUser!!.name, friendUser.uri)
 
                 val messages = usersSnapshot.child(user.uid).child("chats")
-                    .child(friendId).children
+                    .child(_friendId).children
                     .mapNotNull {
                         it.getValue<UserMessage>()
                     }
@@ -150,7 +157,7 @@ class ChatActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG, "loadPost:onCancelled", error.toException())
+                Log.w(ContentValues.TAG, "loadPost:onCancelled", error.toException())
             }
 
         }

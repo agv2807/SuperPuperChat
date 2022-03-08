@@ -1,7 +1,6 @@
-package com.example.superpuperchat.fragments
+package com.example.superpuperchat.chat_list_screen
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,12 +10,11 @@ import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superpuperchat.R
-import com.example.superpuperchat.activities.ChatActivity
-import com.example.superpuperchat.activities.ChatsListActivityInterface
-import com.example.superpuperchat.adapters.ChatMessage
+import com.example.superpuperchat.activities.TabBarActivity
 import com.example.superpuperchat.adapters.ChatsListAdapter
-import com.example.superpuperchat.data_classes.User
-import com.example.superpuperchat.data_classes.UserMessage
+import com.example.superpuperchat.models.ChatMessage
+import com.example.superpuperchat.models.User
+import com.example.superpuperchat.models.UserMessage
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -25,7 +23,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.*
 
 class ChatsListFragment: Fragment(), ChatsListActivityInterface {
 
@@ -46,6 +43,9 @@ class ChatsListFragment: Fragment(), ChatsListActivityInterface {
             return context
         }
         set(value) {}
+
+    private val tabBarActivity: TabBarActivity
+        get() = activity as TabBarActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -138,6 +138,9 @@ class ChatsListFragment: Fragment(), ChatsListActivityInterface {
             if (it.message == null || it.message?.text == "")
                 mutableUsers.remove(it)
         }
+        mutableUsers.sortByDescending {
+            it.message?.time
+        }
         adapter.setData(ArrayList(mutableUsers))
     }
 
@@ -145,8 +148,6 @@ class ChatsListFragment: Fragment(), ChatsListActivityInterface {
         chatsRecyclerView?.visibility = View.GONE
         loader?.visibility = View.VISIBLE
 
-        val intent = Intent(context, ChatActivity::class.java)
-        intent.putExtra("userId", user.id)
-        startActivity(intent)
+        tabBarActivity.routeToUserChat(user.id)
     }
 }

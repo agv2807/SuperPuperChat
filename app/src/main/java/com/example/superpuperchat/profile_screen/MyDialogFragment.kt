@@ -1,11 +1,11 @@
-package com.example.superpuperchat.fragments
+package com.example.superpuperchat.profile_screen
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
-import com.example.superpuperchat.activities.MainActivity
+import com.example.superpuperchat.sign_screen.MainActivity
 import com.example.superpuperchat.activities.TabBarActivity
 
 class MyDialogFragment: DialogFragment() {

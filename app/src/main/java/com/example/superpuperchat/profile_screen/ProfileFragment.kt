@@ -1,4 +1,4 @@
-package com.example.superpuperchat.fragments
+package com.example.superpuperchat.profile_screen
 
 import android.app.Activity
 import android.content.Intent
