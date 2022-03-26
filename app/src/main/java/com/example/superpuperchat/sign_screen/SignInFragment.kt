@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.superpuperchat.R
+import com.example.superpuperchat.sign_screen.activities.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase

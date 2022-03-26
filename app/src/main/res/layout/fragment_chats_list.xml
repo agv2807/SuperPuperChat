@@ -6,7 +6,7 @@
     android:background="@color/black"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".chat_list_screen.ChatsListFragment">
+    tools:context=".user_space_screen.chat_list_screen.ChatsListFragment">
 
     <LinearLayout
         android:orientation="vertical"
@@ -81,25 +81,10 @@
 
     </LinearLayout>
 
-    <RelativeLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chats_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ProgressBar
-            android:id="@+id/loader"
-            android:layout_centerInParent="true"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/chats_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" />
-
-    </RelativeLayout>
-
-
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
 
 </LinearLayout>

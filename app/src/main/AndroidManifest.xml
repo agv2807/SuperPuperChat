@@ -12,12 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SuperPuperChat">
-        <activity android:name=".activities.TabBarActivity">
+        <activity android:name="com.example.superpuperchat.user_space_screen.activities.TabBarActivity">
 
         </activity>
 
         <activity
-            android:name=".sign_screen.MainActivity"
+            android:name=".sign_screen.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

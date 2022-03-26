@@ -1,4 +1,4 @@
-package com.example.superpuperchat.chat_screen
+package com.example.superpuperchat.user_space_screen.chat_screen
 
 import android.view.LayoutInflater
 import android.view.View

@@ -1,4 +1,4 @@
-package com.example.superpuperchat.profile_screen
+package com.example.superpuperchat.user_space_screen.profile_screen
 
 import android.app.Activity
 import android.content.Intent

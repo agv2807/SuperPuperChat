@@ -1,4 +1,4 @@
-package com.example.superpuperchat.chat_list_screen
+package com.example.superpuperchat.user_space_screen.chat_list_screen
 
 import android.content.Context
 import android.os.Bundle
@@ -7,14 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superpuperchat.R
-import com.example.superpuperchat.activities.TabBarActivity
+import com.example.superpuperchat.user_space_screen.activities.TabBarActivity
 import com.example.superpuperchat.adapters.ChatsListAdapter
 import com.example.superpuperchat.models.ChatMessage
 import com.example.superpuperchat.models.User
 import com.example.superpuperchat.models.UserMessage
+import com.example.superpuperchat.user_space_screen.chat_list_screen.interfaces.ChatsListActivityInterface
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -23,10 +25,10 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import java.util.EnumSet.of
+import java.util.List.of
 
 class ChatsListFragment: Fragment(), ChatsListActivityInterface {
-
-    private val usersDatabase: DatabaseReference = Firebase.database.reference
 
     private var searchIcon: ImageView? = null
     private var chatText: TextView? = null
@@ -37,6 +39,8 @@ class ChatsListFragment: Fragment(), ChatsListActivityInterface {
     private var loader: ProgressBar? = null
 
     private var adapter = ChatsListAdapter(this)
+
+    private val chatListViewModel = ChatsListViewModel()
 
     override var localContext: Context?
         get() {
@@ -55,7 +59,9 @@ class ChatsListFragment: Fragment(), ChatsListActivityInterface {
 
         setupViews(view)
 
-        setupListenerData()
+        chatListViewModel.chatsList.observe(requireActivity()) {
+            adapter.setData(ArrayList(it))
+        }
 
         chatsRecyclerView?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         chatsRecyclerView?.adapter = adapter
@@ -97,51 +103,6 @@ class ChatsListFragment: Fragment(), ChatsListActivityInterface {
         searchIcon?.visibility = View.VISIBLE
         chatText?.visibility = View.VISIBLE
         searchContainer?.visibility = View.GONE
-    }
-
-    private fun setupListenerData() {
-        val postListener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                updateData(snapshot)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        }
-        usersDatabase.addValueEventListener(postListener)
-    }
-
-    private fun updateData(snapshot: DataSnapshot) {
-        val users = snapshot.child("users").children
-            .mapNotNull {
-                it.getValue<User>()
-            }.filter {
-                it.id != Firebase.auth.currentUser?.uid
-            }.map {
-                ChatMessage(it)
-            }
-        users.map { item ->
-            val lastMessage = snapshot.child("users")
-                .child(Firebase.auth.currentUser?.uid!!)
-                .child("chats")
-                .child(item.user.id)
-                .children
-                .mapNotNull {
-                    it.getValue<UserMessage>()
-                }
-                .lastOrNull()
-            item.message = lastMessage
-        }
-        val mutableUsers = users.toMutableList()
-        users.forEach {
-            if (it.message == null || it.message?.text == "")
-                mutableUsers.remove(it)
-        }
-        mutableUsers.sortByDescending {
-            it.message?.time
-        }
-        adapter.setData(ArrayList(mutableUsers))
     }
 
     override fun routeToUser(user: User) {

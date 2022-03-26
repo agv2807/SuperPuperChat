@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superpuperchat.R
-import com.example.superpuperchat.chat_list_screen.ChatsListActivityInterface
+import com.example.superpuperchat.user_space_screen.chat_list_screen.interfaces.ChatsListActivityInterface
 import com.example.superpuperchat.models.ChatMessage
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat

@@ -11,6 +11,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.superpuperchat.R
 import com.example.superpuperchat.models.User
+import com.example.superpuperchat.sign_screen.activities.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth

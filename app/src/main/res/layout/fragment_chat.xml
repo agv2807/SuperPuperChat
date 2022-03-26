@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:background="@color/gray_dark"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
+        android:id="@+id/user_info_field"
         android:orientation="horizontal"
         android:background="@color/black"
         android:layout_width="match_parent"
@@ -45,12 +45,15 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat"
+        android:layout_above="@+id/message_cont"
+        android:layout_below="@+id/user_info_field"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent" />
 
     <LinearLayout
+        android:id="@+id/message_cont"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:background="@color/gray"
         android:layout_width="match_parent"
@@ -82,4 +85,4 @@
 
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

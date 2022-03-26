@@ -6,13 +6,7 @@
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/gray_dark"
-    tools:context=".activities.TabBarActivity">
-
-    <FrameLayout
-        android:id="@+id/tap_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation"/>
+    tools:context=".user_space_screen.activities.TabBarActivity">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -22,8 +16,13 @@
         android:background="@color/gray"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
-        app:menu="@menu/nav_menu"
-        />
+        app:menu="@menu/nav_menu" />
+
+    <FrameLayout
+        android:id="@+id/tap_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigation"/>
 
 
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.example.superpuperchat.chat_list_screen
+package com.example.superpuperchat.user_space_screen.chat_list_screen.interfaces
 
 import android.content.Context
 import com.example.superpuperchat.models.User

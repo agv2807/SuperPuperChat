@@ -1,10 +1,12 @@
-package com.example.superpuperchat.sign_screen
+package com.example.superpuperchat.sign_screen.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.superpuperchat.R
-import com.example.superpuperchat.activities.TabBarActivity
+import com.example.superpuperchat.sign_screen.SignInFragment
+import com.example.superpuperchat.sign_screen.SignUpFragment
+import com.example.superpuperchat.user_space_screen.activities.TabBarActivity
 
 class MainActivity : AppCompatActivity() {
 
