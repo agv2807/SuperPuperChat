@@ -34,9 +34,8 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/transparent"
                 android:hint="@string/username"
-                android:text="aaa@aaa.aaa"
                 android:inputType="textEmailAddress"
-                android:paddingStart="20dp"
+                android:paddingHorizontal="20dp"
                 android:textColor="@color/white" />
 
             <View
@@ -50,9 +49,8 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/transparent"
                 android:hint="@string/password"
-                android:text="aaaaaa"
                 android:inputType="textPassword"
-                android:paddingStart="20dp"
+                android:paddingHorizontal="20dp"
                 android:textColor="@color/white" />
 
         </LinearLayout>

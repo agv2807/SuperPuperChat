@@ -7,12 +7,14 @@ import com.example.superpuperchat.R
 import com.example.superpuperchat.user_space_screen.chat_list_screen.ChatsListFragment
 import com.example.superpuperchat.user_space_screen.chat_screen.ChatFragment
 import com.example.superpuperchat.user_space_screen.profile_screen.ProfileFragment
+import com.example.superpuperchat.user_space_screen.search_friends_screen.SearchFriendsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class TabBarActivity: AppCompatActivity() {
 
     private val chatsFragment = ChatsListFragment()
     private val profileFragment = ProfileFragment()
+    private val searchFriendsFragment = SearchFriendsFragment()
 
     private var bottomNavigation: BottomNavigationView? = null
 
@@ -33,6 +35,7 @@ class TabBarActivity: AppCompatActivity() {
             when(it.itemId) {
                 R.id.ic_chats -> routeToChats()
                 R.id.ic_profile -> routeToProfile()
+                R.id.ic_friends -> routeToFriends()
             }
             true
         }
@@ -53,12 +56,25 @@ class TabBarActivity: AppCompatActivity() {
         bottomNavigation?.visibility = View.VISIBLE
     }
 
+    fun routeToFriends() {
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.tap_container, searchFriendsFragment)
+            commit()
+        }
+    }
+
     fun routeToUserChat(id: String) {
         val chatFragment = ChatFragment(id)
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.tap_container, chatFragment)
+            addToBackStack(null)
             commit()
         }
         bottomNavigation?.visibility = View.GONE
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        bottomNavigation?.visibility = View.VISIBLE
     }
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_dark"
+    android:orientation="vertical"
+    tools:context=".user_space_screen.search_friends_screen.SearchFriendsFragment">
+
+    <TextView
+        android:id="@+id/chats_text"
+        android:text="@string/friends"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginVertical="20dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/search_field"
+        android:hint="Имя пользователя"
+        android:textColor="@color/white"
+        android:paddingHorizontal="12dp"
+        android:inputType="textLongMessage"
+        android:paddingVertical="4dp"
+        android:textColorHint="#4BFFFFFF"
+        android:background="@drawable/round_corners"
+        android:layout_marginHorizontal="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:background="@color/white"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginVertical="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/friends_list_rv"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginBottom="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

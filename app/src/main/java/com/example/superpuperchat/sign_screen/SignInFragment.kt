@@ -1,5 +1,6 @@
 package com.example.superpuperchat.sign_screen
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -47,6 +48,8 @@ class SignInFragment : Fragment() {
         loader = view.findViewById(R.id.loader)
         mainCont = view.findViewById(R.id.main_container)
 
+        loadLoginAndPassword()
+
         signInButton?.setOnClickListener {
             signIn(emailEditText?.text.toString(), passwordEditText?.text.toString())
         }
@@ -68,6 +71,7 @@ class SignInFragment : Fragment() {
             auth?.signInWithEmailAndPassword(email, password)
                 ?.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+                        saveLoginAndPassword(emailEditText?.text.toString(), passwordEditText?.text.toString())
                         mainActivity.routeChat()
                     } else {
                         Toast.makeText(activity, task.exception.toString(), Toast.LENGTH_SHORT)
@@ -80,4 +84,18 @@ class SignInFragment : Fragment() {
         }
     }
 
+    private fun saveLoginAndPassword(login: String, password: String) {
+        val sharedPreferences = activity?.getSharedPreferences("shared preferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences?.edit()
+        editor?.putString("saved login", login)
+        editor?.putString("saved password", password)
+        editor?.apply()
+    }
+
+    private fun loadLoginAndPassword() {
+        val sharedPreferences = activity?.getSharedPreferences("shared preferences", Context.MODE_PRIVATE)
+
+        emailEditText?.setText(sharedPreferences?.getString("saved login", ""))
+        passwordEditText?.setText(sharedPreferences?.getString("saved password", ""))
+    }
 }

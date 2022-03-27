@@ -1,6 +1,7 @@
 package com.example.superpuperchat.sign_screen
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -72,7 +73,8 @@ class SignUpFragment : Fragment() {
         mainCont = view.findViewById(R.id.main_container)
 
         registrationButton.setOnClickListener {
-            signUp(emailEditText.text.toString(), passwordEditText.text.toString(), userNameEditText.text.toString())
+            signUp(emailEditText.text.toString(), passwordEditText.text.toString(),
+                userNameEditText.text.toString(), confirmPasswordEditText.text.toString())
         }
 
         backTextView.setOnClickListener {
@@ -84,9 +86,13 @@ class SignUpFragment : Fragment() {
         }
     }
 
-    private fun signUp(email: String, password: String, userName: String) {
+    private fun signUp(email: String, password: String, userName: String, confirmPassword: String) {
         if (email.isEmpty() || password.isEmpty() || userName.isEmpty()) {
             Toast.makeText(context, "Заполните все поля", Toast.LENGTH_SHORT).show()
+        } else if (password != confirmPassword) {
+            Toast.makeText(context, "Пароли не совпадают", Toast.LENGTH_SHORT).show()
+        } else if (password.length < 6) {
+            Toast.makeText(context, "Пароль должен содержать не менее 6 символов", Toast.LENGTH_SHORT).show()
         } else {
             loader.visibility = View.VISIBLE
             mainCont.visibility = View.GONE
@@ -162,6 +168,7 @@ class SignUpFragment : Fragment() {
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     createNewUser(user)
+                    saveLoginAndPassword(emailEditText.text.toString(), passwordEditText.text.toString())
                     mainActivity.routeChat()
                 }
             }
@@ -170,5 +177,13 @@ class SignUpFragment : Fragment() {
     private fun createNewUser(user: FirebaseUser?) {
         val newUser = User(user?.uid ?: "", user?.displayName.toString(), user?.photoUrl.toString())
         usersDatabase.child("users").child(user?.uid ?: "").setValue(newUser)
+    }
+
+    private fun saveLoginAndPassword(login: String, password: String) {
+        val sharedPreferences = activity?.getSharedPreferences("shared preferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences?.edit()
+        editor?.putString("saved login", login)
+        editor?.putString("saved password", password)
+        editor?.apply()
     }
 }

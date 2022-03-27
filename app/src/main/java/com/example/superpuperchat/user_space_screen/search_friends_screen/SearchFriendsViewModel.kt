@@ -1,4 +1,4 @@
-package com.example.superpuperchat.user_space_screen.chat_list_screen
+package com.example.superpuperchat.user_space_screen.search_friends_screen
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,22 +14,22 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 
-class ChatsListViewModel : ViewModel() {
+class SearchFriendsViewModel : ViewModel() {
 
     private val usersDatabase: DatabaseReference = Firebase.database.reference
 
-    val chatsList: MutableLiveData<MutableList<ChatMessage>> by lazy {
-        MutableLiveData<MutableList<ChatMessage>>()
+    val friendsList: MutableLiveData<MutableList<User>> by lazy {
+        MutableLiveData<MutableList<User>>()
     }
 
     init {
-        setupListenerData()
+        setupListenerData("")
     }
 
-    private fun setupListenerData() {
+    private fun setupListenerData(pat: String) {
         val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                updateData(snapshot)
+                updateData(snapshot, pat)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -39,36 +39,28 @@ class ChatsListViewModel : ViewModel() {
         usersDatabase.addValueEventListener(postListener)
     }
 
-    private fun updateData(snapshot: DataSnapshot) {
+    private fun updateData(snapshot: DataSnapshot, pat: String) {
         val users = snapshot.child("users").children
             .mapNotNull {
                 it.getValue<User>()
             }.filter {
                 it.id != Firebase.auth.currentUser?.uid
-            }.map {
-                ChatMessage(it)
             }
-        users.map { item ->
-            val lastMessage = snapshot.child("users")
-                .child(Firebase.auth.currentUser?.uid!!)
-                .child("chats")
-                .child(item.user.id)
-                .children
-                .mapNotNull {
-                    it.getValue<UserMessage>()
-                }
-                .lastOrNull()
-            item.message = lastMessage
-        }
         val mutableUsers = users.toMutableList()
-        users.forEach {
-            if (it.message == null || it.message?.text == "")
-                mutableUsers.remove(it)
+        if (pat.isEmpty()) {
+            friendsList.value = ArrayList(mutableUsers)
+        } else {
+            users.forEach {
+                if (!it.name.startsWith(pat)) {
+                    mutableUsers.remove(it)
+                }
+            }
+            friendsList.value = ArrayList(mutableUsers)
         }
-        mutableUsers.sortByDescending {
-            it.message?.time
-        }
-        chatsList.value = ArrayList(mutableUsers)
+    }
+
+    fun rebootList(name: String) {
+        setupListenerData(name)
     }
 
 }
