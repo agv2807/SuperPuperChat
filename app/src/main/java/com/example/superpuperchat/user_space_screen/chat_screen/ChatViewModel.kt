@@ -17,6 +17,7 @@ class ChatViewModel(friendId: String = ""): ViewModel() {
     private val _friendId = friendId
 
     private val messagesDatabase: DatabaseReference = Firebase.database.reference
+    private val user = Firebase.auth.currentUser!!
 
     val messagesData: MutableLiveData<MutableList<UserMessage>> by lazy {
         MutableLiveData<MutableList<UserMessage>>()
@@ -56,7 +57,7 @@ class ChatViewModel(friendId: String = ""): ViewModel() {
     private fun sendMessage(text: String) {
         val user = Firebase.auth.currentUser!!
         val messageUser = User(user.uid, user.displayName.toString(), user.photoUrl.toString())
-        val message = UserMessage(text = text, user = messageUser, time = endTime)
+        val message = UserMessage(text = text, user = messageUser, time = endTime, isRead = false)
 
         messagesDatabase.child("users").child(user.uid).child("chats")
             .child(_friendId).child(endTime).setValue(message)
@@ -69,7 +70,6 @@ class ChatViewModel(friendId: String = ""): ViewModel() {
     }
 
     private fun setupListenerData() {
-        val user = Firebase.auth.currentUser!!
         val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val usersSnapshot = snapshot.child("users")
@@ -93,7 +93,7 @@ class ChatViewModel(friendId: String = ""): ViewModel() {
                 }
 
                 messages.forEach {
-                    it.isMy = it.user.id == Firebase.auth.currentUser?.uid
+                    it.isMy = it.user.id == user.uid
                 }
                 messagesData.value = ArrayList(messages)
             }
@@ -105,4 +105,8 @@ class ChatViewModel(friendId: String = ""): ViewModel() {
         messagesDatabase.addValueEventListener(postListener)
     }
 
+    fun readMessages(message: UserMessage) {
+        messagesDatabase.child("users").child(user.uid).child("chats")
+                    .child(_friendId).child(message.time).child("read").setValue(true)
+    }
 }

@@ -44,12 +44,20 @@ class ChatsListAdapter(var parentActivity: ChatsListActivityInterface) : Recycle
             val lastMessage = itemView.findViewById<TextView>(R.id.last_message)
             val photo = itemView.findViewById<ImageView>(R.id.user_photo)
             val time = itemView.findViewById<TextView>(R.id.time)
+            val countNonRead = itemView.findViewById<TextView>(R.id.count_non_read)
             userName.text = item.user.name
             lastMessage.text = item.message?.text
             setPhoto(item.user.uri, photo)
             time.text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(
                 Date(item.message?.time?.toLong()!!*1)
             )
+            if (item.countNonRead != 0) {
+                countNonRead.visibility = View.VISIBLE
+                countNonRead.text = item.countNonRead.toString()
+            } else {
+                countNonRead.visibility = View.GONE
+                countNonRead.text = item.countNonRead.toString()
+            }
         }
     }
 

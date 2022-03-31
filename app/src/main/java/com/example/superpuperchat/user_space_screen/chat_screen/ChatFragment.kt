@@ -18,7 +18,7 @@ import com.example.superpuperchat.models.UserMessage
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
-class ChatFragment(friendId: String = "") : Fragment() {
+class ChatFragment(friendId: String = "") : Fragment(), ReadingChatInterface {
 
     private var chatRv: RecyclerView? = null
     private var messageField: EditText? = null
@@ -27,9 +27,9 @@ class ChatFragment(friendId: String = "") : Fragment() {
     private var userName: TextView? = null
     private var backIc: ImageView? = null
 
-    private val adapter = ChatAdapter()
+    private val adapter = ChatAdapter(this)
 
-    private val chatViewModel = ChatViewModel(friendId)
+    private var chatViewModel: ChatViewModel? = ChatViewModel(friendId)
 
     private val tabBarActivity: TabBarActivity
         get() = activity as TabBarActivity
@@ -42,12 +42,12 @@ class ChatFragment(friendId: String = "") : Fragment() {
 
         setupViews(view)
 
-        chatViewModel.messagesData.observe(requireActivity()) {
+        chatViewModel?.messagesData?.observe(requireActivity()) {
             adapter.setData(ArrayList(it))
             scrollToBottom(it)
         }
 
-        chatViewModel.friendInfo.observe(requireActivity()) {
+        chatViewModel?.friendInfo?.observe(requireActivity()) {
             setupFriendInfo(it)
         }
 
@@ -69,7 +69,7 @@ class ChatFragment(friendId: String = "") : Fragment() {
             if (messageField?.text.toString().isEmpty()) {
                 Toast.makeText(context, "Введите сообщение", Toast.LENGTH_SHORT).show()
             } else {
-                chatViewModel.pushEndTime(messageField?.text.toString())
+                chatViewModel?.pushEndTime(messageField?.text.toString())
                 messageField?.setText("")
             }
         }
@@ -88,9 +88,20 @@ class ChatFragment(friendId: String = "") : Fragment() {
     }
 
     private fun scrollToBottom(messages: List<UserMessage>) {
-        val indexToScroll = messages.size - 1
+        var counter = 0
+        messages.forEach { i ->
+            if (!i.isMy) {
+                if (!i.isRead)
+                    counter++
+            }
+        }
+        val indexToScroll = messages.size - 1 - counter
         if (indexToScroll > 0) {
             chatRv?.scrollToPosition(indexToScroll)
         }
+    }
+
+    override fun readMessages(message: UserMessage) {
+        chatViewModel?.readMessages(message)
     }
 }

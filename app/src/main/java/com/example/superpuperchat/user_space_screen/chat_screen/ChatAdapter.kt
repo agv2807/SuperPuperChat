@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ChatAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatAdapter(var readingChatInterface: ReadingChatInterface): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items = arrayListOf<UserMessage>()
 
@@ -37,6 +37,7 @@ class ChatAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             val holderCustom = holder as ViewHolderOtherMessage
             holderCustom.bind(items.elementAt(position))
         }
+        readingChatInterface.readMessages(items.elementAt(position))
     }
 
     override fun getItemCount(): Int = items.size

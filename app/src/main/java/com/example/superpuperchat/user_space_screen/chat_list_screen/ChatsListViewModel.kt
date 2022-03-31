@@ -40,6 +40,8 @@ class ChatsListViewModel : ViewModel() {
     }
 
     private fun updateData(snapshot: DataSnapshot) {
+        val user = Firebase.auth.currentUser!!
+        val usersSnapshot = snapshot.child("users")
         val users = snapshot.child("users").children
             .mapNotNull {
                 it.getValue<User>()
@@ -48,6 +50,7 @@ class ChatsListViewModel : ViewModel() {
             }.map {
                 ChatMessage(it)
             }
+
         users.map { item ->
             val lastMessage = snapshot.child("users")
                 .child(Firebase.auth.currentUser?.uid!!)
@@ -65,6 +68,26 @@ class ChatsListViewModel : ViewModel() {
             if (it.message == null || it.message?.text == "")
                 mutableUsers.remove(it)
         }
+
+        mutableUsers.forEach { item ->
+            var counter = 0
+            val messages = usersSnapshot.child(user.uid).child("chats")
+                .child(item.user.id).children
+                .mapNotNull {
+                    it.getValue<UserMessage>()
+                }
+            messages.forEach {
+                it.isMy = it.user.id == user.uid
+            }
+            messages.forEach { i ->
+                if (!i.isMy) {
+                    if (!i.isRead)
+                        counter++
+                }
+            }
+            item.countNonRead = counter
+        }
+
         mutableUsers.sortByDescending {
             it.message?.time
         }

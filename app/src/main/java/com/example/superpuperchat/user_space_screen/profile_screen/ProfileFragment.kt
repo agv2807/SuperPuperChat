@@ -26,10 +26,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 class ProfileFragment : Fragment() {
     private val REQUEST_CODE = 100
 
-    private val auth: FirebaseAuth = Firebase.auth
-    private val user = auth.currentUser
-    private val usersDatabase: DatabaseReference = Firebase.database.reference
-    private val storageRef = Firebase.storage.reference
+    private val profileViewModel = ProfileViewModel()
 
     private var profilePhoto: CircleImageView? = null
     private var userName: EditText? = null
@@ -44,7 +41,15 @@ class ProfileFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
         setupViews(view)
-        setUserInfo(user)
+
+        profileViewModel.profileInfo.observe(requireActivity()) {
+            setUserInfo(it)
+        }
+
+        profileViewModel.dataToast.observe(requireActivity()) {
+            if (!it.isNullOrEmpty())
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        }
 
         return view
     }
@@ -73,6 +78,15 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    private fun setUserInfo(user: FirebaseUser?) {
+        userName?.setText(user?.displayName)
+
+        Picasso.with(context)
+            .load(user?.photoUrl)
+            .placeholder(R.drawable.man)
+            .into(profilePhoto)
+    }
+
     private fun openAlertDialog() {
         val dialogFragment = MyDialogFragment()
         val manager = activity?.supportFragmentManager!!
@@ -88,38 +102,13 @@ class ProfileFragment : Fragment() {
 
     private fun completeEditName() {
         if (userName!!.text.isEmpty()){
-            userName?.setText(user?.displayName)
+            userName?.setText(profileViewModel.profileInfo.value?.displayName)
         } else {
-            updateUserName(userName?.text.toString())
+            profileViewModel.updateUserName(userName?.text.toString())
         }
         userName?.isEnabled = false
         editNameIcon?.visibility = View.VISIBLE
         completeIcon?.visibility = View.GONE
-    }
-
-    private fun setUserInfo(user: FirebaseUser?) {
-        userName?.setText(user?.displayName)
-
-        Picasso.with(context)
-            .load(user?.photoUrl)
-            .placeholder(R.drawable.man)
-            .into(profilePhoto)
-    }
-
-    private fun updateUserName(userName: String? =  null) {
-        usersDatabase.child("users").child(user!!.uid).child("name").setValue(userName)
-        val nameUpdate = userProfileChangeRequest {
-            displayName = userName ?: displayName
-        }
-        user.updateProfile(nameUpdate)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(context, "Имя изменено", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(context, task.exception.toString(), Toast.LENGTH_SHORT).show()
-                }
-                this.userName?.setText(user.displayName)
-            }
     }
 
     private fun openGallery() {
@@ -137,48 +126,14 @@ class ProfileFragment : Fragment() {
                     .placeholder(R.drawable.man)
                     .into(profilePhoto)
                 data.data?.let {
-                    uploadFile(it)
+                    profileViewModel.uploadFile(it)
                 }
             }
         }
     }
 
-    private fun updatePhoto(image: Uri?) {
-        usersDatabase.child("users").child(user!!.uid).child("uri").setValue(image.toString())
-        val profileUpdates = userProfileChangeRequest {
-            photoUri = image ?: photoUri
-        }
-        auth.currentUser?.updateProfile(profileUpdates)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(context, "Фото обновлено", Toast.LENGTH_SHORT).show()
-                }
-            }
+    override fun onPause() {
+        profileViewModel.dataToast.value = null
+        super.onPause()
     }
-
-    private fun generateId(): String {
-        val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
-        return (1..8)
-            .map { allowedChars.random() }
-            .joinToString("")
-    }
-
-    private fun uploadFile(imageUri: Uri) {
-        val ref = storageRef.child("images/${generateId()}")
-        val uploadTask = ref.putFile(imageUri)
-
-        uploadTask.continueWithTask { task ->
-            if (task.isSuccessful) {
-                task.exception?.let {
-                    throw it
-                }
-            }
-            ref.downloadUrl
-        }.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                updatePhoto(task.result)
-            }
-        }
-    }
-
 }
